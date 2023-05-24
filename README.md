@@ -1,12 +1,12 @@
 # weather_sdk
 Table of content
-Complete Task
-Apply Architecture & Techniques
-Applied Project structure
-Setup project
-Requisites
-Complete Task
-Features:
+- Complete Task
+- Apply Architecture & Techniques
+- Applied Project structure
+- Setup project
+- Requisites
+*Complete Task*
+*Features:*
 
 The application will retrieve the weather information uisng the OpenWeatherMaps API.
 The application allows users to input top of the searching term.
