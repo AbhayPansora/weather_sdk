@@ -31,12 +31,13 @@ Technical requirements:
 WeatherApp:
 
 * WeatherKit: the custom freamwork of the app in this freamwork manages all OpenWeatherMaps API will return weatherData.
-* GetWeatherVC: the main folder of the gethering weather data with MVVMC condding structure including:
+* GetWeatherVC: the main folder of the gethering weather data with MVVMC condding structure including:(MVVMC)
 
-* Controller: the bridge between view and view model and retrive the data particuler requiest wise
+* Model: It's entity or data of the response and it will appear on UI.
 * View: the all view's require outpets and all UI related files
 * ViewModel: it's contains the business logic of the app, e.g. all APIs must be define in file
-* Model: It's entity or data of the response and it will appear on UI.
+* Controller: the bridge between view and view model and retrive the data particuler requiest wise
+
 
 ## Setup project
 To run the app
