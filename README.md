@@ -9,7 +9,7 @@ Table of content
 *Complete Task*
 *Features:*
 
-The application will retrieve the weather information uisng the OpenWeatherMaps API.
+The application will retrieve the weather information using the OpenWeatherMaps API.
 The application allows users to input top of the searching term.
 The application can proceed searching loation with a condition of the search term length must be from 1 characters or above.
 The application can proceed number of days with a condition of the search term length must be between 1 to 7  digists.
