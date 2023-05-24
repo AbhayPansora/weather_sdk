@@ -5,15 +5,15 @@
 * Setup project
 * Requisites
 
-##Complete Task
+## Complete Task
 *Features:*
 
-* The application will retrieve the weather information using the OpenWeatherMaps API.
-* The application allows users to input top of the searching term.
-* The application can proceed searching loation with a condition of the search term length must be from 1 characters or above.
-* The application can proceed number of days with a condition of the search term length must be between 1 to 7  digists.
-* The application can render the searched results as a list of weather items.
-* The application can handle failures.
+* The application will retrieve the weather information using the OpenWeatherMaps API in side WeatherKit Freamwork.
+* The application allows users to input top of the searching textfeild.
+* The application can proceed searching loation with a condition of the search term length must be non emptry textfeild.
+* The application can proceed number of days with a condition of the textfeild length must be 1 and between 1 to 7  digists.
+* The application can render the searched results to the particuler task 1 to 4 respectively.
+* The application can handle failures if something wrng happed.
 
 Technical requirements:
 * iOS Swift
@@ -38,7 +38,7 @@ WeatherApp:
 * ViewModel: it's contains the business logic of the app, e.g. all APIs must be define in file
 * Model: It's entity or data of the response and it will appear on UI.
 
-##Setup project
+## Setup project
 To run the app
 
 * Clone or download the repository from Github.
