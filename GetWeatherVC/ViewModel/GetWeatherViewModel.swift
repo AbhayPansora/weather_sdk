@@ -78,7 +78,7 @@ class GetWeatherViewModel {
             } else if let temperature = temperature {
                 print("Temperature: \(temperature)°")
                 DispatchQueue.main.async {
-                    self.theController.mainView.lblAnsOfFourth.text = "Temperature: \(temperature)°"
+                    self.theController.mainView.lblAnsOfFourth.text = "Temperature: \(temperature.round(to:2))°"
                 }
             } else {
                 print("Unable to fetch temperature.")

@@ -16,6 +16,7 @@ class WeatherAppTests: XCTestCase {
     override func setUp() {
         super.setUp()
         weatherSDK = WeatherKit()
+        weatherSDK.strAPIKey = "ae1c4977a943a50eaa7da25e6258d8b2"
     }
     
     override func tearDown() {
@@ -44,17 +45,36 @@ class WeatherAppTests: XCTestCase {
             // Put the code you want to measure the time of here.
         }
     }
-    func testGetTodayWeather() {
+    
+    func testGetTodayWeather_Success() {
         let expectation = self.expectation(description: "Get today's weather")
         
-        weatherSDK.getTodayWeather(for: "London") { weatherData, error in
-            XCTAssertNil(error, "Error should be nil")
+        weatherSDK.getTodayWeather(for: "Surat") { weatherData, error in
             XCTAssertNotNil(weatherData, "Weather data should not be nil")
+            XCTAssertNil(error, "Error should be nil")
             
             if let weatherData = weatherData {
-                print("Today's Temperature: \(weatherData.temperature)°")
-                print("Today's Wind Speed: \(weatherData.windSpeed) m/s")
+                // Additional assertions to validate the weather data properties
+                XCTAssertNotNil(weatherData.temperature, "Temperature should not be nil")
+                XCTAssertNotNil(weatherData.windSpeed, "Wind speed should not be nil")
+                
+                // Fulfill the expectation to indicate a successful test
+                expectation.fulfill()
             }
+        }
+        
+        // Wait for the expectation to be fulfilled or timeout after a certain interval
+        waitForExpectations(timeout: 5, handler: nil)
+    }
+    
+    func testGetTodayWeather_InvalidLocations() {
+        let expectation = self.expectation(description: "Get today's weather with invalid location")
+        
+        weatherSDK.getTodayWeather(for: "InvalidLocation") { weatherData, error in
+            XCTAssertNil(weatherData, "Weather data should be nil for invalid location")
+            XCTAssertNotNil(error, "Error should not be nil for invalid location")
+            
+            // Additional assertions to validate the error message or error type
             
             expectation.fulfill()
         }
@@ -62,7 +82,25 @@ class WeatherAppTests: XCTestCase {
         waitForExpectations(timeout: 5, handler: nil)
     }
     
-    func testGetWindSpeed() {
+    func testGetTodayWeather_Error() {
+        let expectation = self.expectation(description: "Get today's weather with error")
+        
+        // Invalid API key to trigger an error
+        weatherSDK.strAPIKey = "InvalidAPIKey"
+        
+        weatherSDK.getTodayWeather(for: "Surat") { weatherData, error in
+            XCTAssertNil(weatherData, "Weather data should be nil for error")
+            XCTAssertNotNil(error, "Error should not be nil")
+            
+            // Additional assertions to validate the error message or error type
+            
+            expectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 5, handler: nil)
+    }
+    
+    func testGetWindSpeed_Success() {
         let expectation = self.expectation(description: "Get wind speed")
         
         weatherSDK.getWindSpeed(for: "London") { windSpeed, error in
@@ -78,8 +116,21 @@ class WeatherAppTests: XCTestCase {
         
         waitForExpectations(timeout: 5, handler: nil)
     }
-    
-    func testGetWeatherForFutureDays() {
+    func testGetWindSpeed_InvalidLocation() {
+        let expectation = self.expectation(description: "Get wind speed with invalid location")
+        
+        weatherSDK.getWindSpeed(for: "InvalidLocation") { windSpeed, error in
+            XCTAssertNil(windSpeed, "Wind speed should be nil for invalid location")
+            XCTAssertNotNil(error, "Error should not be nil for invalid location")
+            
+            // Additional assertions to validate the error message or error type for invalid location
+            
+            expectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 5, handler: nil)
+    }
+    func testGetWeatherForFutureDays_Success() {
         let expectation = self.expectation(description: "Get weather for future days")
         
         weatherSDK.getWeatherForFutureDays(for: "London", numberOfDays: 7) { weatherDataArray, error in
@@ -98,6 +149,156 @@ class WeatherAppTests: XCTestCase {
         }
         
         waitForExpectations(timeout: 5, handler: nil)
+    }
+    func testGetWeatherForFutureDays_InvalidLocation() {
+        let expectation = self.expectation(description: "Get weather for future days with invalid location")
+        
+        weatherSDK.getWeatherForFutureDays(for: "InvalidLocation", numberOfDays: 3) { weatherData, error in
+            XCTAssertNil(weatherData, "Weather data should be nil for invalid location")
+            XCTAssertNotNil(error, "Error should not be nil for invalid location")
+            
+            // Additional assertions to validate the error message or error type for invalid location
+            
+            expectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 5, handler: nil)
+    }
+    
+    func testGetTemperature_Success() {
+        let expectation = self.expectation(description: "Get temperature")
+        
+        weatherSDK.getTemperature(for: "Surat", unit: .celsius) { temperature, error in
+            XCTAssertNotNil(temperature, "Temperature should not be nil")
+            XCTAssertNil(error, "Error should be nil")
+            
+            // Additional assertions to validate the temperature value or range in Celsius
+            
+            expectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 5, handler: nil)
+    }
+    
+    func testGetTemperature_InvalidLocation() {
+        let expectation = self.expectation(description: "Get temperature with invalid location")
+        
+        weatherSDK.getTemperature(for: "InvalidLocation", unit: .celsius) { temperature, error in
+            XCTAssertNil(temperature, "Temperature should be nil for invalid location")
+            XCTAssertNotNil(error, "Error should not be nil for invalid location")
+            
+            // Additional assertions to validate the error message or error type for invalid location
+            
+            expectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 5, handler: nil)
+    }
+    
+    func testGetTemperature_InvalidUnit() {
+        let expectation = self.expectation(description: "Get temperature with invalid unit")
+        
+        weatherSDK.getTemperature(for: "Surat", unit: .kelvin) { temperature, error in
+            XCTAssertNil(temperature, "Temperature should be nil for invalid unit")
+            XCTAssertNotNil(error, "Error should not be nil for invalid unit")
+            
+            // Additional assertions to validate the error message or error type for invalid unit
+            
+            expectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 5, handler: nil)
+    }
+    // MARK: - Networking Tests
+    
+    func testGetTodayWeather_SuccessfulRequest() {
+        let expectation = XCTestExpectation(description: "Get today's weather")
+        
+        weatherSDK.getTodayWeather(for: "Surat") { weatherData, error in
+            XCTAssertNil(error, "Error should be nil")
+            XCTAssertNotNil(weatherData, "Weather data should not be nil")
+            expectation.fulfill()
+        }
+        
+        wait(for: [expectation], timeout: 5)
+    }
+    
+    func testGetTodayWeather_InvalidLocation() {
+        let expectation = XCTestExpectation(description: "Get today's weather with invalid location")
+        
+        weatherSDK.getTodayWeather(for: "InvalidLocation") { weatherData, error in
+            XCTAssertNotNil(error, "Error should not be nil")
+            XCTAssertNil(weatherData, "Weather data should be nil")
+            expectation.fulfill()
+        }
+        
+        wait(for: [expectation], timeout: 5)
+    }
+    
+    // MARK: - Model Tests
+    
+    func testWeatherData_InitWithValidJSON() {
+        let json: [String: Any] = [
+            "main": [
+                "temp": 289.5
+            ],
+            "wind": [
+                "speed": 4.2
+            ]
+        ]
+        if let main = json["main"] as? [String: Any], let temperature = main["temp"] as? Double,
+           let wind = json["wind"] as? [String: Any], let windSpeed = wind["speed"] as? Double {
+            let weatherData = WeatherData(temperature: temperature, windSpeed: windSpeed)
+            
+            XCTAssertNotNil(weatherData, "Weather data should not be nil")
+            XCTAssertEqual(weatherData.temperature, 289.5, accuracy: 0.001, "Incorrect temperature value")
+            XCTAssertEqual(weatherData.windSpeed, 4.2, accuracy: 0.001, "Incorrect wind speed value")
+        } else {
+            // Handle the case when the required data is missing or not in the expected format
+        }
+    }
+    
+    func testWeatherData_InitWithInvalidJSON() {
+        let json: [String: Any] = [
+            "main": [
+                "temp": "InvalidTemperature"
+            ],
+            "wind": [
+                "speed": 4.2
+            ]
+        ]
+        
+        if let main = json["main"] as? [String: Any], let temperature = main["temp"] as? Double,
+           let wind = json["wind"] as? [String: Any], let windSpeed = wind["speed"] as? Double {
+            let weatherData = WeatherData(temperature: temperature, windSpeed: windSpeed)
+            XCTAssertNil(weatherData, "Weather data should be nil")
+        } else {
+            // Handle the case when the required data is missing or not in the expected format
+        }
+        
+        
+    }
+    
+    // MARK: - View Model Tests
+    
+    func testWeatherViewModel_TemperatureInCelsius() {
+        let weatherData = WeatherData(temperature: 25.5, windSpeed: 3.8)
+        let viewModel = WeatherViewModel(weatherData: weatherData, unit: .celsius)
+        
+        XCTAssertEqual(viewModel.temperature, "25.5°C", "Incorrect temperature format")
+    }
+    
+    func testWeatherViewModel_TemperatureInFahrenheit() {
+        let weatherData = WeatherData(temperature: 68.9, windSpeed: 3.8)
+        let viewModel = WeatherViewModel(weatherData: weatherData, unit: .fahrenheit)
+        
+        XCTAssertEqual(viewModel.temperature, "68.9°F", "Incorrect temperature format")
+    }
+    
+    func testWeatherViewModel_WindSpeed() {
+        let weatherData = WeatherData(temperature: 25.5, windSpeed: 3.8)
+        let viewModel = WeatherViewModel(weatherData: weatherData, unit: .celsius)
+        XCTAssertEqual(viewModel.windSpeed, "3.8 m/s", "Incorrect wind speed format")
     }
     
 }

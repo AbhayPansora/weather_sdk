@@ -46,11 +46,13 @@ class GetWeatherVC: UIViewController {
     
     @IBAction func btnGetTodaysWeatherActions(_ sender: Any) {
         dismissKeyboard()
-        self.mainModelView.getTodaysWeatherByLocation(location: "London")
+        guard self.mainView.txtLocation.text != "" else{ return }
+        self.mainModelView.getTodaysWeatherByLocation(location: self.mainView.txtLocation.text!)
     }
     @IBAction func btnWindSpeedAction(_ sender: Any) {
         dismissKeyboard()
-        self.mainModelView.getWindSpeed(location:"London")
+        guard self.mainView.txtLocation.text != "" else{ return }
+        self.mainModelView.getWindSpeed(location:self.mainView.txtLocation.text!)
     }
     @IBAction func btnGetFutherDaysWeather(_ sender: Any) {
         dismissKeyboard()
